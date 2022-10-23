@@ -156,8 +156,6 @@ PTPtr<std::string> Parser::parseFactor() {
     PTPtr<std::string> factorNode =
         std::make_shared<PTNode<std::string>>("factor");
 
-        // std::cout << this->tokens[this->current_token].lexeme << std::endl;
-
         this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, factorNode);
     return factorNode;
 }
