@@ -96,6 +96,12 @@ WHITESPACE = 27 */
 PTPtr<std::string> Parser::parseBlock() {
     PTPtr<std::string> blockNode =
         std::make_shared<PTNode<std::string>>("block");
+    PTPtr<std::string> constDeclNode =
+        std::make_shared<PTNode<std::string>>("const_declaration");
+    PTPtr<std::string> varDeclNode =
+        std::make_shared<PTNode<std::string>>("var_declaration");
+    PTPtr<std::string> procedureNode =
+        std::make_shared<PTNode<std::string>>("statement");
 
     token_t token;
     token = this->getNextToken();
@@ -105,8 +111,6 @@ PTPtr<std::string> Parser::parseBlock() {
        a terminal from the token stream stored in the parser until
        it reaches a semicolon (";").*/
     if (token.lexeme.compare("const") == 0) {
-      constDeclNode =
-        std::make_shared<PTNode<std::string>>("const_declaration");
       constDeclNode->addChild(this->parseConstDeclarationList());
       this->tryMatchTerminal(token, SEMICOLON, constDeclNode);
     }
@@ -116,14 +120,11 @@ PTPtr<std::string> Parser::parseBlock() {
        a terminal from the token stream stored in the parser until
        it reaches a semicolon (";").*/
     if (token.lexeme.compare("var") == 0) {
-      varDeclNode =
-        std::make_shared<PTNode<std::string>>("var_declaration");
       varDeclNode->addChild(this->parseVarDeclarationList());
       this->tryMatchTerminal(token, SEMICOLON, varDeclNode);
     }
 
     while (token.lexeme.compare("procedure") == 0) {
-      procedureNode = std::make_shared<PTNode<std::string>>("statement");
       procedureNode->addChild(this->parseStatement());
       this->tryMatchTerminal(token, SEMICOLON, procedureNode);
     }
@@ -172,13 +173,13 @@ PTPtr<std::string> Parser::parseVarDeclarationList() {
 
     while (token.lexeme.compare(",") == 0) {
       if (token.lexeme.compare("x")) {
-        varDeclNode = std::make_shared<PTNode<std::string>>("x");
+        PTPtr<std::string> varDeclNode = std::make_shared<PTNode<std::string>>("x");
         varDeclNode->addChild(this->parseVarDeclarationList());
         this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, varDeclNode);
       }
 
-      if (token.lexeme.compare("squ")) {
-        varDeclNode = std::make_shared<PTNode<std::string>>("square");
+      if (token.lexeme.compare("squ") == 0) {
+        PTPtr<std::string> varDeclNode = std::make_shared<PTNode<std::string>>("square");
         varDeclNode->addChild(this->parseVarDeclarationList());
         this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, varDeclNode);
       }
@@ -202,67 +203,71 @@ PTPtr<std::string> Parser::parseProcedure() {
 PTPtr<std::string> Parser::parseStatement() {
     PTPtr<std::string> statementNode =
         std::make_shared<PTNode<std::string>>("statement");
+    PTPtr<std::string> conditionNode =
+        std::make_shared<PTNode<std::string>>("condition");
+    PTPtr<std::string> expressionNode =
+        std::make_shared<PTNode<std::string>>("expression");
 
-      token_t token;
-      token = this->getNextToken();
+    token_t token;
+    token = this->getNextToken();
 
-      if (token.lexeme.compare(":=") == 0) {
-        statementNode = std::make_shared<PTNode<std::string>>(":=");
+    if (token.lexeme.compare(":=") == 0) {
+      statementNode = std::make_shared<PTNode<std::string>>(":=");
+      statementNode->addChild(this->parseCondition());
+      this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
+    }
+    else if (token.lexeme.compare("call") == 0) {
+      expressionNode = std::make_shared<PTNode<std::string>>("call");
+      expressionNode->addChild(this->parseTerm());
+      this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, expressionNode);
+    }
+    else if (token.lexeme.compare("?") == 0) {
+      statementNode = std::make_shared<PTNode<std::string>>("?");
+      statementNode->addChild(this->parseCondition());
+      this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
+    }
+    else if (token.lexeme.compare("!") == 0) {
+      expressionNode = std::make_shared<PTNode<std::string>>("!");
+      expressionNode->addChild(this->parseTerm());
+      this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, expressionNode);
+    }
+    else if (token.lexeme.compare("begin") == 0) {
+      statementNode = std::make_shared<PTNode<std::string>>("begin");
+      statementNode->addChild(this->parseCondition());
+
+      while (token.lexeme.compare(";") == 0) {
+        statementNode = std::make_shared<PTNode<std::string>>(";");
+        statementNode->addChild(this->parseCondition());
+        // this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
+      }
+
+      this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
+    }
+    else if (token.lexeme.compare("if") == 0) {
+      conditionNode = std::make_shared<PTNode<std::string>>("if");
+      conditionNode->addChild(this->parseExpression());
+      this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, conditionNode);
+
+      if (token.lexeme.compare("then") == 0) {
+        statementNode = std::make_shared<PTNode<std::string>>("then");
         statementNode->addChild(this->parseCondition());
         this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
       }
-      else if (token.lexeme.compare("call") == 0) {
-        expressionNode = std::make_shared<PTNode<std::string>>("call");
-        expressionNode->addChild(this->parseTerm());
-        this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, expressionNode);
-      }
-      else if (token.lexeme.compare("?") == 0) {
-        statementNode = std::make_shared<PTNode<std::string>>("?");
+
+    }
+
+    else if (token.lexeme.compare("while") == 0) {
+      statementNode = std::make_shared<PTNode<std::string>>("while");
+      statementNode->addChild(this->parseCondition());
+      this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
+
+      if (token.lexeme.compare("do") == 0) {
+        statementNode = std::make_shared<PTNode<std::string>>("do");
         statementNode->addChild(this->parseCondition());
         this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
       }
-      else if (token.lexeme.compare("!") == 0) {
-        expressionNode = std::make_shared<PTNode<std::string>>("!");
-        expressionNode->addChild(this->parseTerm());
-        this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, expressionNode);
-      }
-      else if (token.lexeme.compare("begin") == 0) {
-        statementNode = std::make_shared<PTNode<std::string>>("begin");
-        statementNode->addChild(this->parseCondition());
 
-        while (token.lexeme.compare(";") == 0) {
-          statementNode = std::make_shared<PTNode<std::string>>(";");
-          statementNode->addChild(this->parseCondition());
-          // this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
-        }
-
-        this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
-      }
-      else if (token.lexeme.compare("if") == 0) {
-        conditionNode = std::make_shared<PTNode<std::string>>("if");
-        conditionNode->addChild(this->parseExpression());
-        this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, conditionNode);
-
-        if (token.lexeme.compare("then") == 0) {
-          statementNode = std::make_shared<PTNode<std::string>>("then");
-          statementNode->addChild(this->parseCondition());
-          this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
-        }
-
-      }
-
-      else if (token.lexeme.compare("while") == 0) {
-        statementNode = std::make_shared<PTNode<std::string>>("while");
-        statementNode->addChild(this->parseCondition());
-        this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
-
-        if (token.lexeme.compare("do") == 0) {
-          statementNode = std::make_shared<PTNode<std::string>>("do");
-          statementNode->addChild(this->parseCondition());
-          this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
-        }
-
-      }
+    }
 
 
     return statementNode;
@@ -271,11 +276,13 @@ PTPtr<std::string> Parser::parseStatement() {
 PTPtr<std::string> Parser::parseCondition() {
     PTPtr<std::string> conditionNode =
         std::make_shared<PTNode<std::string>>("condition");
+    PTPtr<std::string> expressionNode =
+        std::make_shared<PTNode<std::string>>("expression");
 
     token_t token;
     token = this->getNextToken();
 
-    if (token.lexeme.compare(ODD_OP) == 0) {
+    if (token.lexeme.compare("odd") == 0) {
       expressionNode = std::make_shared<PTNode<std::string>>("odd");
       expressionNode->addChild(this->parseTerm());
       this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, expressionNode);
@@ -317,11 +324,12 @@ PTPtr<std::string> Parser::parseCondition() {
 PTPtr<std::string> Parser::parseExpression() {
     PTPtr<std::string> expressionNode =
         std::make_shared<PTNode<std::string>>("expression");
+    PTPtr<std::string> termNode = std::make_shared<PTNode<std::string>>("term");
 
     token_t token;
     token = this->getNextToken();
 
-    if (token.lexeme.compare(ADD_OP) == 0) {
+    if (token.lexeme.compare("+") == 0) {
       expressionNode = std::make_shared<PTNode<std::string>>("+");
       expressionNode->addChild(this->parseTerm());
       this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, expressionNode);
@@ -332,7 +340,7 @@ PTPtr<std::string> Parser::parseExpression() {
       this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, expressionNode);
     }
 
-    while (token.lexeme.compare(ADD_OP) == 0) {
+    while (token.lexeme.compare("+") == 0) {
       if (token.lexeme.compare("+") == 0) {
         termNode = std::make_shared<PTNode<std::string>>("+");
         termNode->addChild(this->parseFactor());
@@ -354,6 +362,8 @@ PTPtr<std::string> Parser::parseExpression() {
 
 PTPtr<std::string> Parser::parseTerm() {
     PTPtr<std::string> termNode = std::make_shared<PTNode<std::string>>("term");
+    TPtr<std::string> factorNode =
+        std::make_shared<PTNode<std::string>>("factor");
 
     token_t token;
     token = this->getNextToken();
@@ -362,7 +372,7 @@ PTPtr<std::string> Parser::parseTerm() {
     this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, termNode);
 
     while (token.lexeme.compare("factor") == 0) {
-      if (token.lexeme.compare(MULT_OP == 0)) {
+      if (token.lexeme.compare("*") == 0) {
         factorNode = std::make_shared<PTNode<std::string>>("*");
         termNode->addChild(this->parseFactor());
         this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, termNode);
