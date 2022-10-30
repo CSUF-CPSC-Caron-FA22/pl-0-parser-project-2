@@ -1,0 +1,210 @@
+[  6%] Building CXX object CMakeFiles/CompileLib.dir/src/parser.cpp.o
+/home/student/github/pl-0-parser-project-2/src/parser.cpp: In member function ‘PTPtr<std::__cxx11::basic_string<char> > Parser::parseBlock()’:
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:108:7: error: ‘constDeclNode’ was not declared in this scope
+  108 |       constDeclNode =
+      |       ^~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:119:7: error: ‘varDeclNode’ was not declared in this scope
+  119 |       varDeclNode =
+      |       ^~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:126:7: error: ‘procedureNode’ was not declared in this scope
+  126 |       procedureNode = std::make_shared<PTNode<std::string>>("statement");
+      |       ^~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp: In member function ‘PTPtr<std::__cxx11::basic_string<char> > Parser::parseVarDeclarationList()’:
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:175:9: error: ‘varDeclNode’ was not declared in this scope; did you mean ‘varDeclNodeList’?
+  175 |         varDeclNode = std::make_shared<PTNode<std::string>>("x");
+      |         ^~~~~~~~~~~
+      |         varDeclNodeList
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:181:9: error: ‘varDeclNode’ was not declared in this scope; did you mean ‘varDeclNodeList’?
+  181 |         varDeclNode = std::make_shared<PTNode<std::string>>("square");
+      |         ^~~~~~~~~~~
+      |         varDeclNodeList
+/home/student/github/pl-0-parser-project-2/src/parser.cpp: In member function ‘PTPtr<std::__cxx11::basic_string<char> > Parser::parseStatement()’:
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:215:9: error: ‘expressionNode’ was not declared in this scope
+  215 |         expressionNode = std::make_shared<PTNode<std::string>>("call");
+      |         ^~~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:225:9: error: ‘expressionNode’ was not declared in this scope
+  225 |         expressionNode = std::make_shared<PTNode<std::string>>("!");
+      |         ^~~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:242:9: error: ‘conditionNode’ was not declared in this scope
+  242 |         conditionNode = std::make_shared<PTNode<std::string>>("if");
+      |         ^~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp: In member function ‘PTPtr<std::__cxx11::basic_string<char> > Parser::parseCondition()’:
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:278:36: error: no matching function for call to ‘std::__cxx11::basic_string<char>::compare(token_class)’
+  278 |     if (token.lexeme.compare(ODD_OP) == 0) {
+      |                                    ^
+In file included from /usr/include/c++/9/string:55,
+                 from /home/student/github/pl-0-parser-project-2/./include/lexer.h:11,
+                 from /home/student/github/pl-0-parser-project-2/./include/parser.h:11,
+                 from /home/student/github/pl-0-parser-project-2/src/parser.cpp:8:
+/usr/include/c++/9/bits/basic_string.h:2857:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]’
+ 2857 |       compare(const basic_string& __str) const
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2857:35: note:   no known conversion for argument 1 from ‘token_class’ to ‘const std::__cxx11::basic_string<char>&’
+ 2857 |       compare(const basic_string& __str) const
+      |               ~~~~~~~~~~~~~~~~~~~~^~~~~
+/usr/include/c++/9/bits/basic_string.h:2950:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 2950 |       compare(size_type __pos, size_type __n, const basic_string& __str) const;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2950:7: note:   candidate expects 3 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:2976:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 2976 |       compare(size_type __pos1, size_type __n1, const basic_string& __str,
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2976:7: note:   candidate expects 5 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:2994:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(const _CharT*) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]’
+ 2994 |       compare(const _CharT* __s) const _GLIBCXX_NOEXCEPT;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2994:29: note:   no known conversion for argument 1 from ‘token_class’ to ‘const char*’
+ 2994 |       compare(const _CharT* __s) const _GLIBCXX_NOEXCEPT;
+      |               ~~~~~~~~~~~~~~^~~
+/usr/include/c++/9/bits/basic_string.h:3018:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const _CharT*) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 3018 |       compare(size_type __pos, size_type __n1, const _CharT* __s) const;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:3018:7: note:   candidate expects 3 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:3045:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const _CharT*, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 3045 |       compare(size_type __pos, size_type __n1, const _CharT* __s,
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:3045:7: note:   candidate expects 4 arguments, 1 provided
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:279:7: error: ‘expressionNode’ was not declared in this scope
+  279 |       expressionNode = std::make_shared<PTNode<std::string>>("odd");
+      |       ^~~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:285:9: error: ‘expressionNode’ was not declared in this scope
+  285 |         expressionNode = std::make_shared<PTNode<std::string>>(":=");
+      |         ^~~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:290:9: error: ‘expressionNode’ was not declared in this scope
+  290 |         expressionNode = std::make_shared<PTNode<std::string>>("<");
+      |         ^~~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:295:9: error: ‘expressionNode’ was not declared in this scope
+  295 |         expressionNode = std::make_shared<PTNode<std::string>>("<=");
+      |         ^~~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:300:9: error: ‘expressionNode’ was not declared in this scope
+  300 |         expressionNode = std::make_shared<PTNode<std::string>>(">");
+      |         ^~~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:305:9: error: ‘expressionNode’ was not declared in this scope
+  305 |         expressionNode = std::make_shared<PTNode<std::string>>(">=");
+      |         ^~~~~~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp: In member function ‘PTPtr<std::__cxx11::basic_string<char> > Parser::parseExpression()’:
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:324:36: error: no matching function for call to ‘std::__cxx11::basic_string<char>::compare(token_class)’
+  324 |     if (token.lexeme.compare(ADD_OP) == 0) {
+      |                                    ^
+In file included from /usr/include/c++/9/string:55,
+                 from /home/student/github/pl-0-parser-project-2/./include/lexer.h:11,
+                 from /home/student/github/pl-0-parser-project-2/./include/parser.h:11,
+                 from /home/student/github/pl-0-parser-project-2/src/parser.cpp:8:
+/usr/include/c++/9/bits/basic_string.h:2857:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]’
+ 2857 |       compare(const basic_string& __str) const
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2857:35: note:   no known conversion for argument 1 from ‘token_class’ to ‘const std::__cxx11::basic_string<char>&’
+ 2857 |       compare(const basic_string& __str) const
+      |               ~~~~~~~~~~~~~~~~~~~~^~~~~
+/usr/include/c++/9/bits/basic_string.h:2950:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 2950 |       compare(size_type __pos, size_type __n, const basic_string& __str) const;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2950:7: note:   candidate expects 3 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:2976:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 2976 |       compare(size_type __pos1, size_type __n1, const basic_string& __str,
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2976:7: note:   candidate expects 5 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:2994:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(const _CharT*) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]’
+ 2994 |       compare(const _CharT* __s) const _GLIBCXX_NOEXCEPT;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2994:29: note:   no known conversion for argument 1 from ‘token_class’ to ‘const char*’
+ 2994 |       compare(const _CharT* __s) const _GLIBCXX_NOEXCEPT;
+      |               ~~~~~~~~~~~~~~^~~
+/usr/include/c++/9/bits/basic_string.h:3018:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const _CharT*) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 3018 |       compare(size_type __pos, size_type __n1, const _CharT* __s) const;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:3018:7: note:   candidate expects 3 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:3045:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const _CharT*, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 3045 |       compare(size_type __pos, size_type __n1, const _CharT* __s,
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:3045:7: note:   candidate expects 4 arguments, 1 provided
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:335:39: error: no matching function for call to ‘std::__cxx11::basic_string<char>::compare(token_class)’
+  335 |     while (token.lexeme.compare(ADD_OP) == 0) {
+      |                                       ^
+In file included from /usr/include/c++/9/string:55,
+                 from /home/student/github/pl-0-parser-project-2/./include/lexer.h:11,
+                 from /home/student/github/pl-0-parser-project-2/./include/parser.h:11,
+                 from /home/student/github/pl-0-parser-project-2/src/parser.cpp:8:
+/usr/include/c++/9/bits/basic_string.h:2857:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]’
+ 2857 |       compare(const basic_string& __str) const
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2857:35: note:   no known conversion for argument 1 from ‘token_class’ to ‘const std::__cxx11::basic_string<char>&’
+ 2857 |       compare(const basic_string& __str) const
+      |               ~~~~~~~~~~~~~~~~~~~~^~~~~
+/usr/include/c++/9/bits/basic_string.h:2950:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 2950 |       compare(size_type __pos, size_type __n, const basic_string& __str) const;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2950:7: note:   candidate expects 3 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:2976:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 2976 |       compare(size_type __pos1, size_type __n1, const basic_string& __str,
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2976:7: note:   candidate expects 5 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:2994:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(const _CharT*) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]’
+ 2994 |       compare(const _CharT* __s) const _GLIBCXX_NOEXCEPT;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2994:29: note:   no known conversion for argument 1 from ‘token_class’ to ‘const char*’
+ 2994 |       compare(const _CharT* __s) const _GLIBCXX_NOEXCEPT;
+      |               ~~~~~~~~~~~~~~^~~
+/usr/include/c++/9/bits/basic_string.h:3018:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const _CharT*) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 3018 |       compare(size_type __pos, size_type __n1, const _CharT* __s) const;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:3018:7: note:   candidate expects 3 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:3045:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const _CharT*, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 3045 |       compare(size_type __pos, size_type __n1, const _CharT* __s,
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:3045:7: note:   candidate expects 4 arguments, 1 provided
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:337:9: error: ‘termNode’ was not declared in this scope
+  337 |         termNode = std::make_shared<PTNode<std::string>>("+");
+      |         ^~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:342:9: error: ‘termNode’ was not declared in this scope
+  342 |         termNode = std::make_shared<PTNode<std::string>>("-");
+      |         ^~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp: In member function ‘PTPtr<std::__cxx11::basic_string<char> > Parser::parseTerm()’:
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:365:32: error: ‘MULT_OP’ was not declared in this scope; did you mean ‘MUL_OP’?
+  365 |       if (token.lexeme.compare(MULT_OP == 0)) {
+      |                                ^~~~~~~
+      |                                MUL_OP
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:366:9: error: ‘factorNode’ was not declared in this scope
+  366 |         factorNode = std::make_shared<PTNode<std::string>>("*");
+      |         ^~~~~~~~~~
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:371:45: error: no matching function for call to ‘std::__cxx11::basic_string<char>::compare(bool)’
+  371 |       else if (token.lexeme.compare("/" == 0)) {
+      |                                             ^
+In file included from /usr/include/c++/9/string:55,
+                 from /home/student/github/pl-0-parser-project-2/./include/lexer.h:11,
+                 from /home/student/github/pl-0-parser-project-2/./include/parser.h:11,
+                 from /home/student/github/pl-0-parser-project-2/src/parser.cpp:8:
+/usr/include/c++/9/bits/basic_string.h:2857:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]’
+ 2857 |       compare(const basic_string& __str) const
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2857:35: note:   no known conversion for argument 1 from ‘bool’ to ‘const std::__cxx11::basic_string<char>&’
+ 2857 |       compare(const basic_string& __str) const
+      |               ~~~~~~~~~~~~~~~~~~~~^~~~~
+/usr/include/c++/9/bits/basic_string.h:2950:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 2950 |       compare(size_type __pos, size_type __n, const basic_string& __str) const;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2950:7: note:   candidate expects 3 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:2976:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 2976 |       compare(size_type __pos1, size_type __n1, const basic_string& __str,
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2976:7: note:   candidate expects 5 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:2994:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(const _CharT*) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]’
+ 2994 |       compare(const _CharT* __s) const _GLIBCXX_NOEXCEPT;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:2994:29: note:   no known conversion for argument 1 from ‘bool’ to ‘const char*’
+ 2994 |       compare(const _CharT* __s) const _GLIBCXX_NOEXCEPT;
+      |               ~~~~~~~~~~~~~~^~~
+/usr/include/c++/9/bits/basic_string.h:3018:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const _CharT*) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 3018 |       compare(size_type __pos, size_type __n1, const _CharT* __s) const;
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:3018:7: note:   candidate expects 3 arguments, 1 provided
+/usr/include/c++/9/bits/basic_string.h:3045:7: note: candidate: ‘int std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::compare(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type, const _CharT*, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::size_type = long unsigned int]’
+ 3045 |       compare(size_type __pos, size_type __n1, const _CharT* __s,
+      |       ^~~~~~~
+/usr/include/c++/9/bits/basic_string.h:3045:7: note:   candidate expects 4 arguments, 1 provided
+/home/student/github/pl-0-parser-project-2/src/parser.cpp:372:9: error: ‘factorNode’ was not declared in this scope
+  372 |         factorNode = std::make_shared<PTNode<std::string>>("/");
+      |         ^~~~~~~~~~
+make[2]: *** [CMakeFiles/CompileLib.dir/build.make:115: CMakeFiles/CompileLib.dir/src/parser.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:154: CMakeFiles/CompileLib.dir/all] Error 2
+make: *** [Makefile:130: all] Error 2
