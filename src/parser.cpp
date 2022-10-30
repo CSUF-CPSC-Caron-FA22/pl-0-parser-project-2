@@ -362,7 +362,7 @@ PTPtr<std::string> Parser::parseExpression() {
 
 PTPtr<std::string> Parser::parseTerm() {
     PTPtr<std::string> termNode = std::make_shared<PTNode<std::string>>("term");
-    TPtr<std::string> factorNode =
+    PTPtr<std::string> factorNode =
         std::make_shared<PTNode<std::string>>("factor");
 
     token_t token;
@@ -378,7 +378,7 @@ PTPtr<std::string> Parser::parseTerm() {
         this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, termNode);
       }
 
-      else if (token.lexeme.compare("/" == 0)) {
+      else if (token.lexeme.compare("/") == 0) {
         factorNode = std::make_shared<PTNode<std::string>>("/");
         termNode->addChild(this->parseFactor());
         this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, termNode);
