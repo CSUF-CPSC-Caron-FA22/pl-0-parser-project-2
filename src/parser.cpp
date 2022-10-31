@@ -101,24 +101,22 @@ PTPtr<std::string> Parser::parseBlock() {
     PTPtr<std::string> varDeclNode =
         std::make_shared<PTNode<std::string>>("var_declaration");
     PTPtr<std::string> procedureNode =
-        std::make_shared<PTNode<std::string>>("statement");
+        std::make_shared<PTNode<std::string>>("procedure");
 
     token_t token;
     token = this->getNextToken();
 
     /* Checks if "const" identifier is present in token.
-       If the condition is false, then the program will call to consume
-       a terminal from the token stream stored in the parser until
-       it reaches a semicolon (";").*/
+       If the condition is true, then the program will go through
+       the token stream stored until it reaches a semicolon (";").*/
     if (token.lexeme.compare("const") == 0) {
       constDeclNode->addChild(this->parseConstDeclarationList());
       this->tryMatchTerminal(token, SEMICOLON, constDeclNode);
     }
 
     /* Checks if "var" identifier is present in token.
-       If the condition is false, then the program will call to consume
-       a terminal from the token stream stored in the parser until
-       it reaches a semicolon (";").*/
+       If the condition is true, then the program will go through the
+       token stream stored until it reaches a semicolon (";").*/
     if (token.lexeme.compare("var") == 0) {
       varDeclNode->addChild(this->parseVarDeclarationList());
       this->tryMatchTerminal(token, SEMICOLON, varDeclNode);
@@ -173,15 +171,15 @@ PTPtr<std::string> Parser::parseVarDeclarationList() {
 
     while (token.lexeme.compare(",") == 0) {
       if (token.lexeme.compare("x")) {
-        PTPtr<std::string> varDeclNode = std::make_shared<PTNode<std::string>>("x");
-        varDeclNode->addChild(this->parseVarDeclarationList());
-        this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, varDeclNode);
+        varDeclNodeList = std::make_shared<PTNode<std::string>>("x");
+        varDeclNodeList->addChild(this->parseVarDeclarationList());
+        this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, varDeclNodeList);
       }
 
       if (token.lexeme.compare("squ") == 0) {
-        PTPtr<std::string> varDeclNode = std::make_shared<PTNode<std::string>>("square");
-        varDeclNode->addChild(this->parseVarDeclarationList());
-        this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, varDeclNode);
+        varDeclNodeList = std::make_shared<PTNode<std::string>>("squ");
+        varDeclNodeList->addChild(this->parseVarDeclarationList());
+        this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, varDeclNodeList);
       }
     }
 
