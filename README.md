@@ -2,7 +2,7 @@
 
 ## Group Members
 
-Tanya Samari tsamari[at]csu.fullerton.edu
+Tanya Samari (tsamari[at]csu.fullerton.edu)
 
 ## Instructions
 
