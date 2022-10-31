@@ -109,7 +109,7 @@ PTPtr<std::string> Parser::parseBlock() {
     /* Checks if "const" keyword is present in token.
        If the condition is true, then the program will go through
        the token stream stored until it reaches a semicolon (";").*/
-    if (token.type == CONST_KEYWORD) {
+    if (token.lexeme.compare("const") == 0) {
       constDeclNode->addChild(this->parseConstDeclarationList());
       this->tryMatchTerminal(token, SEMICOLON, constDeclNode);
     }
@@ -117,12 +117,12 @@ PTPtr<std::string> Parser::parseBlock() {
     /* Checks if "var" keyword is present in token.
        If the condition is true, then the program will go through the
        token stream stored until it reaches a semicolon (";").*/
-    if (token.type == VAR_KEYWORD) {
+    if (token.lexeme.compare("var") == 0) {
       varDeclNode->addChild(this->parseVarDeclarationList());
       this->tryMatchTerminal(token, {SEMICOLON, COMMA}, varDeclNode);
     }
 
-    while (token.type == PROCEDURE_KEYWORD) {
+    while (token.lexeme.compare("procedure") == 0) {
       procedureNode->addChild(this->parseStatement());
       this->tryMatchTerminal(token, SEMICOLON, procedureNode);
     }
