@@ -236,7 +236,7 @@ PTPtr<std::string> Parser::parseStatement() {
       while (token.lexeme.compare(";") == 0) {
         statementNode = std::make_shared<PTNode<std::string>>(";");
         statementNode->addChild(this->parseCondition());
-        // this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
+        this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
       }
 
       this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER, END_KEYWORD}, statementNode);
