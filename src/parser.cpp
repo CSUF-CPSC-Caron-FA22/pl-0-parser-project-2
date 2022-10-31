@@ -119,15 +119,13 @@ PTPtr<std::string> Parser::parseBlock() {
        token stream stored until it reaches a semicolon (";").*/
     if (token.lexeme.compare("var") == 0) {
       varDeclNode->addChild(this->parseVarDeclarationList());
-      this->tryMatchTerminal(token, SEMICOLON, varDeclNode);
+      this->tryMatchTerminal(token, {SEMICOLON, COMMA}, varDeclNode);
     }
 
     while (token.lexeme.compare("procedure") == 0) {
       procedureNode->addChild(this->parseStatement());
       this->tryMatchTerminal(token, SEMICOLON, procedureNode);
     }
-
-    /*blockNode->addChild(this->parseProcedure());*/
 
     blockNode->addChild(this->parseStatement());
     this->tryMatchTerminal(token, SEMICOLON, blockNode);
@@ -313,8 +311,8 @@ PTPtr<std::string> Parser::parseCondition() {
       }
     }
 
-    /* conditionNode->addChild(this->parseExpression());
-    this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, conditionNode); */
+    conditionNode->addChild(this->parseExpression());
+    this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, conditionNode);
 
     return conditionNode;
 }
@@ -351,9 +349,8 @@ PTPtr<std::string> Parser::parseExpression() {
       }
     }
 
-    /*expressionNode->addChild(this->parseTerm());
+    expressionNode->addChild(this->parseTerm());
     this->tryMatchTerminal(this->getNextToken(), {RIGHT_PAREN, NUMBER_LITERAL, IDENTIFIER}, expressionNode);
-    */
 
     return expressionNode;
 }
