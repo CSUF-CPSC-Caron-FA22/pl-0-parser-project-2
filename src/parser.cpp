@@ -45,23 +45,6 @@ PTPtr<std::string> Parser::parseProgram() {
 
 // START OF IMPLEMENTATION
 
-/* Valid terms that can be identified by the parser:
-
-"program", ".", "block", "statement", "end", "statement", "statement",
-"end", "statement", "expression", "term", "factor", "1", "+", "term",
-"factor", "x", ":=", "x", ";", "statement", "expression", "term",
-"factor", "squ", "!", ";", "statement", "square", "call", "begin",
-"do", "condition", "expression", "term", "factor", "10", "<=",
-"expression", "term", "factor", "x", "while", ";", "statement",
-"expression", "term", "factor", "1", ":=", "x", "begin", "procedure",
-";", "block", "statement", "end", "statement", "expression", "term",
-"factor", "x", "*", "factor", "x", ":=", "squ", "begin", ";", "square",
-"procedure", "var_declaration", ";", "var_declaration_list", "squ", ",",
-"x", "var" */
-
-/* The parser converts the tokens it receives into a tree data structure.
-   When the parser identifies the "const" or "var" identifiers in the code,
-   it will add those tokens to the block as its children.*/
 PTPtr<std::string> Parser::parseBlock() {
     PTPtr<std::string> blockNode =
         std::make_shared<PTNode<std::string>>("block");
@@ -69,8 +52,10 @@ PTPtr<std::string> Parser::parseBlock() {
         std::make_shared<PTNode<std::string>>("const_declaration");
     PTPtr<std::string> varDeclNode =
         std::make_shared<PTNode<std::string>>("var_declaration");
-    PTPtr<std::string> procedureNode =
+    PTPtr<std::string> procedure =
         std::make_shared<PTNode<std::string>>("procedure");
+    PTPtr<std::string> statementNode =
+        std::make_shared<PTNode<std::string>>("statement");
 
     token_t token;
     token = this->peekNextToken();
@@ -78,7 +63,7 @@ PTPtr<std::string> Parser::parseBlock() {
     /* Checks if "const" keyword is present in token.
        If the condition is true, then the program will go through
        the token stream stored until it reaches a semicolon (";").*/
-    if (token.lexeme.compare("const") == 0) {
+    if (token.type == CONST_KEYWORD) {
       constDeclNode->addChild(this->parseConstDeclarationList());
       this->tryMatchTerminal(this->getNextToken(), SEMICOLON, constDeclNode);
     }
@@ -86,18 +71,18 @@ PTPtr<std::string> Parser::parseBlock() {
     /* Checks if "var" keyword is present in token.
        If the condition is true, then the program will go through the
        token stream stored until it reaches a semicolon (";").*/
-    if (token.lexeme.compare("var") == 0) {
+    if (token.type == VAR_KEYWORD) {
       varDeclNode->addChild(this->parseVarDeclarationList());
       this->tryMatchTerminal(this->getNextToken(), {SEMICOLON, COMMA}, varDeclNode);
     }
 
-    while (token.lexeme.compare("procedure") == 0) {
-      procedureNode->addChild(this->parseStatement());
-      this->tryMatchTerminal(this->getNextToken(), SEMICOLON, procedureNode);
+    while (token.type == PROCEDURE_KEYWORD) {
+      procedure->addChild(this->parseStatement());
+      this->tryMatchTerminal(this->getNextToken(), SEMICOLON, procedure);
     }
 
-    blockNode->addChild(this->parseStatement());
-    this->tryMatchTerminal(this->getNextToken(), SEMICOLON, blockNode);
+    statementNode->addChild(this->parseCondition());
+    this->tryMatchTerminal(this->getNextToken(), SEMICOLON, statementNode);
 
     return blockNode;
 }
@@ -204,18 +189,19 @@ PTPtr<std::string> Parser::parseVarDeclarationList() {
 PTPtr<std::string> Parser::parseProcedure() {
     PTPtr<std::string> procedure =
         std::make_shared<PTNode<std::string>>("procedure");
-    PTPtr<std::string> blockNode =
-        parseBlock();
+    PTPtr<std::string> blockNode = this->parseBlock();
 
     token_t token;
     token = this->peekNextToken();
 
-    while (token.lexeme.compare("procedure") ==  0) {
-      procedure = std::make_shared<PTNode<std::string>>(token.lexeme);
+    /* If the "procedure" keyword is present, then the program will
+    add the identifier and block to the tree until it reaches a semicolon. */
+    while (token.type == PROCEDURE_KEYWORD) {
+    //  procedure = std::make_shared<PTNode<std::string>>(token.lexeme);
       procedure->addChild(this->parseStatement());
-      this->tryMatchTerminal(this->getNextToken(), SEMICOLON, procedure);
+      //this->tryMatchTerminal(this->getNextToken(), SEMICOLON, procedure);
 
-      blockNode->addChild(this->parseConstDeclarations());
+      blockNode->addChild(this->parseSt());
       this->tryMatchTerminal(this->getNextToken(), SEMICOLON, blockNode);
     }
 
