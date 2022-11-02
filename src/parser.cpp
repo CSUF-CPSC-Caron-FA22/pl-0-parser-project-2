@@ -201,7 +201,7 @@ PTPtr<std::string> Parser::parseProcedure() {
       procedure->addChild(this->parseStatement());
       //this->tryMatchTerminal(this->getNextToken(), SEMICOLON, procedure);
 
-      blockNode->addChild(this->parseSt());
+      blockNode->addChild(this->parseStatement());
       this->tryMatchTerminal(this->getNextToken(), SEMICOLON, blockNode);
     }
 
