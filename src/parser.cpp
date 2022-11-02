@@ -134,30 +134,22 @@ PTPtr<std::string> Parser::parseConstDeclarationList() {
     token = this->peekNextToken();
 
     if (token.type == CONST_KEYWORD) {
-      while (true) {
+      while(true) {
 
-        if (token.type == COMMA) {
-          constDeclListNode = std::make_shared<PTNode<std::string>>(",");
-          constDeclListNode->addChild(this->parseVarDeclarations());
-          this->tryMatchTerminal(this->getNextToken(), IDENTIFIER, constDeclListNode);
-        }
+        constDeclListNode = std::make_shared<PTNode<std::string>>(",");
+        constDeclListNode->addChild(this->parseVarDeclarations());
 
-        else if (token.type == IDENTIFIER) {
-          constDeclListNode = std::make_shared<PTNode<std::string>>(token.lexeme);
-          constDeclListNode->addChild(this->parseVarDeclarations());
-          this->tryMatchTerminal(this->getNextToken(), EQUALS, constDeclListNode);
-        }
+        constDeclListNode = std::make_shared<PTNode<std::string>>(token.lexeme);
+        constDeclListNode->addChild(this->parseVarDeclarations());
+        //this->tryMatchTerminal(this->getNextToken(), EQUALS, constDeclListNode);
+        this->tryMatchTerminal(this->getNextToken(), {CONST_KEYWORD, IDENTIFIER, EQUALS, SEMICOLON, NUMBER_LITERAL}, constDeclListNode);
 
-        else if (token.type == NUMBER_LITERAL) {
-          constDeclListNode = std::make_shared<PTNode<std::string>>(token.lexeme);
-          constDeclListNode->addChild(this->parseVarDeclarations());
-          this->tryMatchTerminal(this->getNextToken(), SEMICOLON, constDeclListNode);
-        }
-        else {
-          break;
+        constDeclListNode = std::make_shared<PTNode<std::string>>(token.lexeme);
+        constDeclListNode->addChild(this->parseVarDeclarations());
+        //this->tryMatchTerminal(this->getNextToken(), SEMICOLON, constDeclListNode);
+        this->tryMatchTerminal(this->getNextToken(), {CONST_KEYWORD, IDENTIFIER, EQUALS, SEMICOLON, NUMBER_LITERAL}, constDeclListNode);
         }
       }
-    }
 
     /* constDeclListNode->addChild(this->parseVarDeclarations());
     this->tryMatchTerminal(this->getNextToken(), NUMBER_LITERAL, constDeclListNode); */
@@ -168,17 +160,19 @@ PTPtr<std::string> Parser::parseConstDeclarationList() {
 PTPtr<std::string> Parser::parseVarDeclarations() {
     PTPtr<std::string> varDeclNode =
         std::make_shared<PTNode<std::string>>("var_declaration");
+    PTPtr<std::string> varDeclListNode =
+        std::make_shared<PTNode<std::string>>("var_declaration_list");
 
     token_t token;
     token = this->peekNextToken();
 
-    if (token.type == VAR_KEYWORD) {
-      varDeclNode = std::make_shared<PTNode<std::string>>("var");
-      varDeclNode->addChild(this->parseVarDeclarationList());
-      this->tryMatchTerminal(this->getNextToken(), IDENTIFIER, varDeclNode);
-      varDeclNode->addChild(this->parseVarDeclarationList());
-      this->tryMatchTerminal(this->getNextToken(), SEMICOLON, varDeclNode);
-    }
+    varDeclNode = std::make_shared<PTNode<std::string>>("var");
+    varDeclNode->addChild(this->parseVarDeclarationList());
+    this->tryMatchTerminal(this->getNextToken(), IDENTIFIER, varDeclNode);
+
+    varDeclListNode = std::make_shared<PTNode<std::string>>(token.lexeme);
+    varDeclListNode->addChild(this->parseProcedure());
+    this->tryMatchTerminal(this->getNextToken(), SEMICOLON, varDeclListNode);
 
     return varDeclNode;
 }
@@ -192,14 +186,16 @@ PTPtr<std::string> Parser::parseVarDeclarationList() {
 
     if (token.type == VAR_KEYWORD) {
       while(true) {
+        varDeclNodeList = std::make_shared<PTNode<std::string>>(",");
+        varDeclNodeList->addChild(this->parseProcedure());
+        this->tryMatchTerminal(this->getNextToken(), {VAR_KEYWORD, IDENTIFIER}, varDeclNodeList);
 
         varDeclNodeList = std::make_shared<PTNode<std::string>>(token.lexeme);
         varDeclNodeList->addChild(this->parseProcedure());
         this->tryMatchTerminal(this->getNextToken(), COMMA, varDeclNodeList);
 
-        varDeclNodeList = std::make_shared<PTNode<std::string>>(",");
-        varDeclNodeList->addChild(this->parseProcedure());
-        this->tryMatchTerminal(this->getNextToken(), IDENTIFIER, varDeclNodeList);
+
+      //  this->tryMatchTerminal(this->getNextToken(), IDENTIFIER, varDeclNodeList);
 
         }
       }
