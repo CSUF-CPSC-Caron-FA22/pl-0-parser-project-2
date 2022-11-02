@@ -186,16 +186,14 @@ PTPtr<std::string> Parser::parseVarDeclarationList() {
 
     if (token.type == VAR_KEYWORD) {
       while(true) {
-        varDeclNodeList = std::make_shared<PTNode<std::string>>(",");
-        varDeclNodeList->addChild(this->parseProcedure());
-        this->tryMatchTerminal(this->getNextToken(), {VAR_KEYWORD, IDENTIFIER}, varDeclNodeList);
 
         varDeclNodeList = std::make_shared<PTNode<std::string>>(token.lexeme);
         varDeclNodeList->addChild(this->parseProcedure());
         this->tryMatchTerminal(this->getNextToken(), COMMA, varDeclNodeList);
 
-
-      //  this->tryMatchTerminal(this->getNextToken(), IDENTIFIER, varDeclNodeList);
+        varDeclNodeList = std::make_shared<PTNode<std::string>>(",");
+        varDeclNodeList->addChild(this->parseProcedure());
+        this->tryMatchTerminal(this->getNextToken(), IDENTIFIER, varDeclNodeList);
 
         }
       }
@@ -207,13 +205,19 @@ PTPtr<std::string> Parser::parseProcedure() {
     PTPtr<std::string> procedure =
         std::make_shared<PTNode<std::string>>("procedure");
     PTPtr<std::string> blockNode =
-        std::make_shared<PTNode<std::string>>("block");
+        parseBlock();
 
-    procedure->addChild(this->parseStatement());
-    this->tryMatchTerminal(this->getNextToken(), {IDENTIFIER, SEMICOLON}, procedure);
+    token_t token;
+    token = this->peekNextToken();
 
-    blockNode->addChild(this->parseConstDeclarations());
-    this->tryMatchTerminal(this->getNextToken(), SEMICOLON, procedure);
+    while (token.lexeme.compare("procedure") ==  0) {
+      procedure = std::make_shared<PTNode<std::string>>(token.lexeme);
+      procedure->addChild(this->parseStatement());
+      this->tryMatchTerminal(this->getNextToken(), SEMICOLON, procedure);
+
+      blockNode->addChild(this->parseConstDeclarations());
+      this->tryMatchTerminal(this->getNextToken(), SEMICOLON, blockNode);
+    }
 
     return procedure;
 }
@@ -231,6 +235,8 @@ PTPtr<std::string> Parser::parseStatement() {
 
     if (token.type == IDENTIFIER) {
       expressionNode = std::make_shared<PTNode<std::string>>(token.lexeme);
+
+      parseExpression();
       expressionNode->addChild(this->parseTerm());
       this->tryMatchTerminal(this->getNextToken(), DEFINE_EQUALS, expressionNode);
     }
